@@ -116,12 +116,14 @@ private static void ShowSearchProductView()
 
        
 
-        var product = new Product(
-            name,
-            sku,
-            description,
-            image,
-            price);
+        var product = new Product{
+
+            Name = name,
+            Sku = sku,
+            Description = description,
+            Image =image,
+            Price = price
+        };
 
         Clear();
 
