@@ -1,25 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using ProductManager.Domain;
 
-namespace ProductManager.Data;
-
 public class ApplicationContext : DbContext
 {
 
+    private string connectionString = "Server=.;Database=ProductManager;Integrated Security=false;Encrypt=False;User ID=SA;Password=Dinoaugust123456!;";
 
-    public readonly string connectionString;
+  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+  {
+    optionsBuilder.UseSqlServer(connectionString);
+  }
 
-    public ApplicationContext(string connectionString)
-    {
-        this.connectionString = connectionString;
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer(connectionString);
-    }
-
-
-    //Gör vårat DbSet public och koppla det till tabellen Student - glöm inte göra den public i klass
-    public DbSet<Product> Product { get; set; }
+  public DbSet<Product> Product { get; set; }
 }

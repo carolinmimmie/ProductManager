@@ -1,5 +1,4 @@
-﻿using ProductManager.Data;
-using ProductManager.Domain;
+﻿using ProductManager.Domain;
 using static System.Console;
 
 namespace ProductManager;
@@ -8,8 +7,7 @@ class Program
 {
    // static string connectionString = "ProductManager;User=SA;Password=Dinoaugust123456!;ConnectRetryCount=0;MultipleActiveResultSets=true;Encrypt=False";
     //Global Context
-    static string connectionString = "Server=.;Database=ProductManager;Integrated Security=false;Encrypt=False;User ID=SA;Password=Dinoaugust123456!;";
-    static ApplicationContext context = new ApplicationContext(connectionString);
+    static ApplicationContext context = new ApplicationContext();
 
     static void Main()
     {
