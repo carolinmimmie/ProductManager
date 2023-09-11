@@ -58,15 +58,20 @@ class Program
 
         return context.Product.FirstOrDefault(x => x.Sku == sku);
     }
+    //     private static void WaitUntilKeyPressed(ConsoleKey key)
+    // {
+    //     while (ReadKey(true).Key != ConsoleKey.Escape);
+    // }
 private static void ShowSearchProductView()
 {
-    Write("Sku: ");
+    Write("SKU: ");
 
     string sku = ReadLine();
 
     Clear();
 
     var product = GetProductBySku(sku);
+
 
     if (product is not null)
     {
@@ -76,6 +81,8 @@ private static void ShowSearchProductView()
         WriteLine($"Bild: {product.Image}");
         WriteLine($"Pris: {product.Price}");
         WriteLine("(R)adera");
+
+        //WaitUntilKeyPressed(ConsoleKey.Escape);
 
         char key = Console.ReadKey().KeyChar;
 
@@ -113,20 +120,19 @@ private static void ShowSearchProductView()
         Write("Pris: ");
 
         string price = ReadLine();
+         
+        try
+        {
+          var product = new Product
+          {
+              Name = name,
+              Sku = sku,
+              Description = description,
+              Image = image,
+              Price = price
+          };
 
        
-
-        var product = new Product{
-
-            Name = name,
-            Sku = sku,
-            Description = description,
-            Image =image,
-            Price = price
-        };
-
-        Clear();
-
         WriteLine("Är detta korrekt? (J)a (N)ej");
 
         char key = Console.ReadKey().KeyChar;
@@ -143,12 +149,6 @@ private static void ShowSearchProductView()
         else if (key == 'N' || key == 'n')
         {
             Clear();
-            // WriteLine($"Namn: {product.Name}");
-            // WriteLine($"Sku: {product.Sku}");
-            // WriteLine($"Beskrivning: {product.Description}");
-            // WriteLine($"Bild: {product.Image}");
-            // WriteLine($"Pris: {product.Price}");
-            // WriteLine("(R)adera");
            
         }
         else
@@ -157,22 +157,11 @@ private static void ShowSearchProductView()
              WriteLine("Välj (J)a eller (N)ej");
      
         }
-
-       
-
-       
-        
-
-        // try
-        // {
-        //     SaveProduct(product);
-
-        //     WriteLine("Produkt sparad");
-        // }
-        // catch
-        // {
-        //     WriteLine("Studerande redan registrerad");
-        // }
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+        }
 
         Thread.Sleep(2000);
     }
@@ -226,6 +215,7 @@ private static void ShowSearchProductView()
         Clear();
         // Handle "No" option logic here if needed
     }
+    
 }
 
 }

@@ -9,34 +9,91 @@ public class Product
       //Lägger till Id om vi använder oss av det i databasen
     public int Id { get; set; }
     // auto-implemented properties som har get och set metoder
+       private string name;
 
     [MaxLength(50)]
-    public string Name { get; set; }
+   public required string Name { 
+        get => name; 
+        set
+        {
+            // Guard clause - säkerställer att vi inte få in "dålig" 
+            // data för förnamn
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentException("Name cannot be null or empty");
+            }
+
+            name = value;
+        }   
+    }
+      private string sku;
+
     [MaxLength(10)]
-    public string Sku { get; set; }
+       public required string Sku { 
+        get => sku; 
+        set
+        {
+            // Guard clause - säkerställer att vi inte få in "dålig" 
+            // data för förnamn
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentException("Sku cannot be null or empty");
+            }
+
+            sku = value;
+        }   
+    }
+           private string description;
+
     [MaxLength(50)]
-    public string Description { get; set; }
+   public required string Description { 
+        get => description; 
+        set
+        {
+            // Guard clause - säkerställer att vi inte få in "dålig" 
+            // data för förnamn
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentException("Description cannot be null or empty");
+            }
+
+            description = value;
+        }   
+    }
+         private string image;
+
     [MaxLength(50)]
-    public string Image { get; set; }
+   public required string Image { 
+        get => image; 
+        set
+        {
+            // Guard clause - säkerställer att vi inte få in "dålig" 
+            // data för förnamn
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentException("Image cannot be null or empty");
+            }
+
+            image = value;
+        }   
+    }
+
+    private string price;
+
     [MaxLength(20)]
-    public string Price { get; set; }
+      public required string Price { 
+        get => price; 
+        set
+        {
+            // Guard clause - säkerställer att vi inte få in "dålig" 
+            // data för förnamn
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentException("Price cannot be null or empty");
+            }
 
-   
-
-    //konstruktor som vill ha strängar som kommer in
-    // public Product(string name, string sku, string description, string image, string price)
-    // {
-
-    //     Name = name;
-    //     Sku = sku;
-    //     Description = description;
-    //     Image = image;
-    //     Price = price;
-  
-    // }
-
-
-    //Privata Fält kan placeras här 
-    //private string socialSecurityNumber;
+            image = price;
+        }   
+    }
 }
 
