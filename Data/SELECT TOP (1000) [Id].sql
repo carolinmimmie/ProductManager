@@ -1,0 +1,7 @@
+SELECT TOP (1000) [Id]
+      ,[Name]
+      ,[Sku]
+      ,[Description]
+      ,[Image]
+      ,[Price]
+  FROM [ProductManager].[dbo].[Product]
