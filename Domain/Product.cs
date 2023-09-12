@@ -20,5 +20,23 @@ public class Product
     public string Image { get; set; }
     [MaxLength(20)]
     public string Price { get; set; }
+
+   
+
+    //konstruktor som vill ha strängar som kommer in
+    // public Product(string name, string sku, string description, string image, string price)
+    // {
+
+    //     Name = name;
+    //     Sku = sku;
+    //     Description = description;
+    //     Image = image;
+    //     Price = price;
+  
+    // }
+
+
+    //Privata Fält kan placeras här 
+    //private string socialSecurityNumber;
 }
 
