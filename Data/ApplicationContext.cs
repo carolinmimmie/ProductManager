@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using ProductManager.Domain;
 
+namespace ProductManager.Data;
+
 public class ApplicationContext : DbContext
 {
 
@@ -10,6 +12,6 @@ public class ApplicationContext : DbContext
   {
     optionsBuilder.UseSqlServer(connectionString);
   }
-
+  //Kunna prata med tabellen som skapades
   public DbSet<Product> Product { get; set; }
 }

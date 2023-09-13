@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using ProductManager.Data;
 
 #nullable disable
 
 namespace ProductManager.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230908105612_InitialCreate")]
+    [Migration("20230913103459_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -25,16 +26,13 @@ namespace ProductManager.Migrations
 
             modelBuilder.Entity("ProductManager.Domain.Product", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Sku")
+                        .HasColumnType("nchar(10)");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Image")
                         .IsRequired()
@@ -48,15 +46,10 @@ namespace ProductManager.Migrations
 
                     b.Property<string>("Price")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
-                    b.Property<string>("Sku")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
+                    b.HasKey("Sku");
 
                     b.ToTable("Product");
                 });
