@@ -21,7 +21,7 @@ class Program
             WriteLine("2. Sök produkt");
             WriteLine("3. Avsluta");
 
-            var keyPressed = ReadKey(intercept: true); //hämtar in värdet
+            var keyPressed = ReadKey(); //hämtar in knapptryck
 
             Clear(); // Rensa skärmen efter vi gjort ett val
 
@@ -30,14 +30,14 @@ class Program
                 case ConsoleKey.D1: //case för menyval1
                 case ConsoleKey.NumPad1:
 
-                    ShowRegisterProductView();
+                    RegisterProduct();
 
                     break;
 
                 case ConsoleKey.D2: //case för menyval2
                 case ConsoleKey.NumPad2:
 
-                    ShowSearchProductView();
+                    SearchProduct();
 
                     break;
 
@@ -49,64 +49,12 @@ class Program
                     return;
             }
 
-            Clear(); // Rensa skärmen efter vi fyllt i 
+            Clear(); // Rensa skärmen efter val i meny
         }
     }
 
     //Metoderna
-    private static Product? FindProduct(string sku) //returnera produkt eller null
-    {
-
-        //Kollar om det finns en produkt med Sku-numret användaren skrive i
-        //om det finns returna produkten
-        var product = context
-       .Product
-       .FirstOrDefault(x => x.Sku == sku);
-
-        return product;
-
-        //return context.Product.FirstOrDefault(x => x.Sku == sku);
-
-    }
-    private static void ShowSearchProductView()
-    {
-        Write("SKU: ");
-
-        string sku = ReadLine();
-
-        Clear();
-
-        //skicka in socialSecurityNumber i metoden FindPatient
-        var product = FindProduct(sku);
-
-        //Om patienten hittades
-        if (product is not null)
-        {
-            WriteLine($"Namn: {product.Name}");
-            WriteLine($"Sku: {product.Sku}");
-            WriteLine($"Beskrivning: {product.Description}");
-            WriteLine($"Bild: {product.Image}");
-            WriteLine($"Pris: {product.Price}");
-            WriteLine("(R)adera");
-
-            //while (ReadKey(true).Key is not ConsoleKey.Escape) ;//väntar på escape för att avluta loopen 
-
-            char key = Console.ReadKey().KeyChar;
-
-            if (key == 'R' || key == 'r')
-            {
-                DeleteProduct(product);
-            }
-        }
-        else
-        {
-            WriteLine("Produkten finns ej");
-
-            Thread.Sleep(2000);
-        }
-    }
-
-    private static void ShowRegisterProductView()
+    private static void RegisterProduct()
     {
         Write("Namn: ");
 
@@ -139,37 +87,145 @@ class Program
             Price = price
         };
 
-        Clear();
-
         WriteLine("Är detta korrekt? (J)a (N)ej");
 
-        char key = Console.ReadKey().KeyChar;
+        var keyPressed = ReadKey(); //hämtar in knapptryck
 
-        if (key == 'J' || key == 'j')
+        switch (keyPressed.Key)
         {
-            Clear();
+            case ConsoleKey.J: //case för menyval1
 
-            SaveProduct(product);//spara patient
+                Clear();
 
-            WriteLine("Produkten sparad");
+                SaveProduct(product); // Spara produkten
 
+                WriteLine("Produkten sparad");
+
+                break;
+
+            case ConsoleKey.N: //case för menyval1
+
+                Clear();
+
+                RegisterProduct();
+
+                break;
+
+                // default:
+                //     Clear();
+                //     WriteLine("Välj (J)a eller (N)ej");
+                //     break;
         }
-        else if (key == 'N' || key == 'n')
+
+        // char key = Console.ReadKey().KeyChar;
+
+        // if (key == 'J' || key == 'j')
+        // {
+        //     Clear();
+
+        //     SaveProduct(product);//spara patient
+
+        //     WriteLine("Produkten sparad");
+
+        // }
+        // else if (key == 'N' || key == 'n')
+        // {
+        //     Clear();
+
+        //     RegisterProduct();
+
+        // }
+        // else
+        // {
+        //     Clear();
+
+        //     WriteLine("Välj (J)a eller (N)ej");
+
+        // }
+
+        Thread.Sleep(2000);
+    }
+
+    private static void SearchProduct()
+    {
+        Write("SKU: ");
+
+        string sku = ReadLine();
+
+        Clear();
+
+        //skicka in socialSecurityNumber i metoden FindPatient
+        var product = FindProduct(sku);
+
+        //Om produkten hittades
+        if (product is not null)
         {
-            Clear();
+            WriteLine($"Namn: {product.Name}");
+            WriteLine($"Sku: {product.Sku}");
+            WriteLine($"Beskrivning: {product.Description}");
+            WriteLine($"Bild: {product.Image}");
+            WriteLine($"Pris: {product.Price}");
+            WriteLine("(R)adera");
 
-            ShowRegisterProductView();
+            while (true)
+            {
 
+                var keyPressed = ReadKey(); //hämtar in knapptryck
+
+                switch (keyPressed.Key)
+                {
+                    case ConsoleKey.R: //case för knapptryck R
+
+                        DeleteProduct(product);
+
+                        return;
+
+                    case ConsoleKey.Escape: //case för knapptryck Escape
+
+                        return;
+                }
+            }
         }
         else
         {
-            Clear();
+            WriteLine("Produkt finns ej");
 
-            WriteLine("Välj (J)a eller (N)ej");
-
+            Thread.Sleep(2000);
         }
 
-        Thread.Sleep(2000);
+
+
+
+        //while (ReadKey(true).Key is not ConsoleKey.Escape) ;//väntar på escape för att avluta loopen 
+
+        //     char key = Console.ReadKey().KeyChar;
+
+        //     if (key == 'R' || key == 'r')
+        //     {
+        //         DeleteProduct(product);
+        //     }
+        // }
+        // else
+        // {
+        //     WriteLine("Produkten finns ej");
+
+        //     Thread.Sleep(2000);
+
+    }
+
+    private static Product? FindProduct(string sku) //returnera produkt eller null
+    {
+
+        //Kollar om det finns en produkt med Sku-numret användaren skrive i
+        //om det finns returna produkten
+        var product = context
+       .Product
+       .FirstOrDefault(x => x.Sku == sku);
+
+        return product;
+
+        //return context.Product.FirstOrDefault(x => x.Sku == sku);
+
     }
 
     private static void SaveProduct(Product product)
@@ -197,30 +253,88 @@ class Program
         WriteLine($"Pris: {product.Price}");
         WriteLine("Radera produkt? (J)a eller (N)ej");
 
-        char key = Console.ReadKey().KeyChar;
 
-        if (key == 'J' || key == 'j')
+        var keyPressed = ReadKey(); //hämtar in knapptryck
+
+        switch (keyPressed.Key)
         {
+            case ConsoleKey.J: //case för menyval1
+                Clear();
+                // Här lägger vi till studerande till DbContext - den är nu medveten om
+                // detta objektet men har ännu inte sparat den till databasen.
+                context.Product.Remove(product);
 
-            Clear();
+                // Här triggas anrop till databasen för att lagra studerande.
+                context.SaveChanges();
 
+                WriteLine("Produkt raderad");
 
-            // Här lägger vi till studerande till DbContext - den är nu medveten om
-            // detta objektet men har ännu inte sparat den till databasen.
-            context.Product.Remove(product);
+                Thread.Sleep(2000);
 
-            // Här triggas anrop till databasen för att lagra studerande.
-            context.SaveChanges();
+                return;
 
-            WriteLine("Produkt raderad");
+            case ConsoleKey.N: //case för menyval1
+                Clear();
 
-            Thread.Sleep(2000);
+                //skicka in socialSecurityNumber i metoden FindPatient
 
+                //Om produkten hittades
+                if (product is not null)
+                {
+                    WriteLine($"Namn: {product.Name}");
+                    WriteLine($"Sku: {product.Sku}");
+                    WriteLine($"Beskrivning: {product.Description}");
+                    WriteLine($"Bild: {product.Image}");
+                    WriteLine($"Pris: {product.Price}");
+                    WriteLine("(R)adera");
+
+                    while (true)
+                    {
+
+                        var keyPressedTest = ReadKey(); //hämtar in knapptryck
+
+                        switch (keyPressedTest.Key)
+                        {
+                            case ConsoleKey.R: //case för knapptryck R
+
+                                DeleteProduct(product);
+
+                                return;
+
+                            case ConsoleKey.Escape: //case för knapptryck Escape
+
+                                return;
+                        }
+                    }
+                }
+
+                return;
         }
-        else if (key == 'N' || key == 'n')
-        {
-            
-        }
+
+        // char key = Console.ReadKey().KeyChar;
+
+        // if (key == 'J' || key == 'j')
+        // {
+
+        //     Clear();
+
+
+        //     // Här lägger vi till studerande till DbContext - den är nu medveten om
+        //     // detta objektet men har ännu inte sparat den till databasen.
+        //     context.Product.Remove(product);
+
+        //     // Här triggas anrop till databasen för att lagra studerande.
+        //     context.SaveChanges();
+
+        //     WriteLine("Produkt raderad");
+
+        //     Thread.Sleep(2000);
+
+        // }
+        // else if (key == 'N' || key == 'n')
+        // {
+
+        // }
     }
 
 }
