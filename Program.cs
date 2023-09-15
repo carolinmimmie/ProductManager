@@ -6,9 +6,7 @@ namespace ProductManager;
 
 class Program
 {
-    // static string connectionString = "ProductManager;User=SA;Password=Dinoaugust123456!;ConnectRetryCount=0;MultipleActiveResultSets=true;Encrypt=False";
-    //Global Context
-    static ApplicationContext context = new ApplicationContext();
+    //static ApplicationContext context = new ApplicationContext();
 
     public static void Main()
     {
@@ -87,6 +85,8 @@ class Program
             Price = price
         };
 
+        WriteLine("");
+        WriteLine("");
         WriteLine("Är detta korrekt? (J)a (N)ej");
 
         var keyPressed = ReadKey(); //hämtar in knapptryck
@@ -111,37 +111,7 @@ class Program
 
                 break;
 
-                // default:
-                //     Clear();
-                //     WriteLine("Välj (J)a eller (N)ej");
-                //     break;
         }
-
-        // char key = Console.ReadKey().KeyChar;
-
-        // if (key == 'J' || key == 'j')
-        // {
-        //     Clear();
-
-        //     SaveProduct(product);//spara patient
-
-        //     WriteLine("Produkten sparad");
-
-        // }
-        // else if (key == 'N' || key == 'n')
-        // {
-        //     Clear();
-
-        //     RegisterProduct();
-
-        // }
-        // else
-        // {
-        //     Clear();
-
-        //     WriteLine("Välj (J)a eller (N)ej");
-
-        // }
 
         Thread.Sleep(2000);
     }
@@ -165,6 +135,8 @@ class Program
             WriteLine($"Beskrivning: {product.Description}");
             WriteLine($"Bild: {product.Image}");
             WriteLine($"Pris: {product.Price}");
+            WriteLine("");
+            WriteLine("");
             WriteLine("(R)adera");
 
             while (true)
@@ -193,31 +165,13 @@ class Program
             Thread.Sleep(2000);
         }
 
-
-
-
-        //while (ReadKey(true).Key is not ConsoleKey.Escape) ;//väntar på escape för att avluta loopen 
-
-        //     char key = Console.ReadKey().KeyChar;
-
-        //     if (key == 'R' || key == 'r')
-        //     {
-        //         DeleteProduct(product);
-        //     }
-        // }
-        // else
-        // {
-        //     WriteLine("Produkten finns ej");
-
-        //     Thread.Sleep(2000);
-
     }
 
     private static Product? FindProduct(string sku) //returnera produkt eller null
     {
 
-        //Kollar om det finns en produkt med Sku-numret användaren skrive i
-        //om det finns returna produkten
+        using var context = new ApplicationContext();//vårt context
+
         var product = context
        .Product
        .FirstOrDefault(x => x.Sku == sku);
@@ -230,7 +184,7 @@ class Program
 
     private static void SaveProduct(Product product)
     {
-
+        using var context = new ApplicationContext();//vårt context
         //2 Kommandon
 
         // Här lägger vi till studerande till DbContext - den är nu medveten om
@@ -244,6 +198,8 @@ class Program
 
     private static void DeleteProduct(Product product)
     {
+        using var context = new ApplicationContext();//vårt context
+
         Clear();
 
         WriteLine($"Namn: {product.Name}");
@@ -251,6 +207,8 @@ class Program
         WriteLine($"Beskrivning: {product.Description}");
         WriteLine($"Bild: {product.Image}");
         WriteLine($"Pris: {product.Price}");
+        WriteLine("");
+        WriteLine("");
         WriteLine("Radera produkt? (J)a eller (N)ej");
 
 
@@ -260,6 +218,7 @@ class Program
         {
             case ConsoleKey.J: //case för menyval1
                 Clear();
+
                 // Här lägger vi till studerande till DbContext - den är nu medveten om
                 // detta objektet men har ännu inte sparat den till databasen.
                 context.Product.Remove(product);
@@ -286,6 +245,8 @@ class Program
                     WriteLine($"Beskrivning: {product.Description}");
                     WriteLine($"Bild: {product.Image}");
                     WriteLine($"Pris: {product.Price}");
+                    WriteLine("");
+                    WriteLine("");
                     WriteLine("(R)adera");
 
                     while (true)
@@ -310,31 +271,6 @@ class Program
 
                 return;
         }
-
-        // char key = Console.ReadKey().KeyChar;
-
-        // if (key == 'J' || key == 'j')
-        // {
-
-        //     Clear();
-
-
-        //     // Här lägger vi till studerande till DbContext - den är nu medveten om
-        //     // detta objektet men har ännu inte sparat den till databasen.
-        //     context.Product.Remove(product);
-
-        //     // Här triggas anrop till databasen för att lagra studerande.
-        //     context.SaveChanges();
-
-        //     WriteLine("Produkt raderad");
-
-        //     Thread.Sleep(2000);
-
-        // }
-        // else if (key == 'N' || key == 'n')
-        // {
-
-        // }
     }
 
 }
