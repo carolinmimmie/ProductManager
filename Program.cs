@@ -149,7 +149,7 @@ class Program
             while (true)
             {
 
-                var keyPressed = ReadKey(); //hämtar in knapptryck
+                var keyPressed = ReadKey(true); //hämtar in knapptryck
 
                 switch (keyPressed.Key)
                 {
@@ -214,7 +214,7 @@ class Program
         WriteLine("");
         Write("Är detta korrekt? (J)a (N)ej");
 
-        var keyPressed = ReadKey(); //hämtar in knapptryck
+        var keyPressed = ReadKey(true); //hämtar in knapptryck
 
         switch (keyPressed.Key)
         {
@@ -284,7 +284,7 @@ class Program
         WriteLine("Radera produkt? (J)a eller (N)ej");
 
 
-        var keyPressed = ReadKey(); //hämtar in knapptryck
+        var keyPressed = ReadKey(true); //hämtar in knapptryck
 
         switch (keyPressed.Key)
         {
@@ -319,12 +319,12 @@ class Program
                     WriteLine($"Pris: {product.Price}");
                     WriteLine("");
                     WriteLine("");
-                    WriteLine("(R)adera");
+                    WriteLine("(R)adera" + "  " + "(U)ppdatera");
 
                     while (true)
                     {
 
-                        var keyPressedTest = ReadKey(); //hämtar in knapptryck
+                        var keyPressedTest = ReadKey(true); //hämtar in knapptryck
 
                         switch (keyPressedTest.Key)
                         {
