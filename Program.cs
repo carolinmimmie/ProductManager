@@ -310,39 +310,38 @@ class Program
                 //skicka in socialSecurityNumber i metoden FindPatient
 
                 //Om produkten hittades
-                if (product is not null)
+                // if (product is not null)
+                // {
+                WriteLine($"Namn: {product.Name}");
+                WriteLine($"Sku: {product.Sku}");
+                WriteLine($"Beskrivning: {product.Description}");
+                WriteLine($"Bild: {product.Image}");
+                WriteLine($"Pris: {product.Price}");
+                WriteLine("");
+                WriteLine("");
+                WriteLine("(R)adera" + "  " + "(U)ppdatera");
+
+                while (true)
                 {
-                    WriteLine($"Namn: {product.Name}");
-                    WriteLine($"Sku: {product.Sku}");
-                    WriteLine($"Beskrivning: {product.Description}");
-                    WriteLine($"Bild: {product.Image}");
-                    WriteLine($"Pris: {product.Price}");
-                    WriteLine("");
-                    WriteLine("");
-                    WriteLine("(R)adera" + "  " + "(U)ppdatera");
+                    var keyPressedTest = ReadKey(true); //hämtar in knapptryck
 
-                    while (true)
+                    switch (keyPressedTest.Key)
                     {
+                        case ConsoleKey.R: //case för knapptryck R
 
-                        var keyPressedTest = ReadKey(true); //hämtar in knapptryck
+                            DeleteProduct(product);
 
-                        switch (keyPressedTest.Key)
-                        {
-                            case ConsoleKey.R: //case för knapptryck R
+                            return;
 
-                                DeleteProduct(product);
+                        case ConsoleKey.Escape: //case för knapptryck Escape
 
-                                return;
-
-                            case ConsoleKey.Escape: //case för knapptryck Escape
-
-                                return;
-                        }
+                            return;
                     }
                 }
-
-                return;
         }
+
+        // return;
+        // }
     }
 
 }
