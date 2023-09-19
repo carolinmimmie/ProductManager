@@ -6,8 +6,6 @@ namespace ProductManager;
 
 class Program
 {
-    //static ApplicationContext context = new ApplicationContext();
-
     public static void Main()
     {
         Title = "Product Manager"; //sätter namnet på tabben
@@ -19,7 +17,7 @@ class Program
             WriteLine("2. Sök produkt");
             WriteLine("3. Avsluta");
 
-            var keyPressed = ReadKey(); //hämtar in knapptryck
+            var keyPressed = ReadKey(true); //Läser in knapptryck
 
             Clear(); // Rensa skärmen efter vi gjort ett val
 
@@ -54,6 +52,8 @@ class Program
     //Metoderna
     private static void RegisterProduct()
     {
+        CursorVisible = true;
+
         Write("Namn: ");
 
         string name = ReadLine();
@@ -74,8 +74,10 @@ class Program
 
         string price = ReadLine();
 
+        CursorVisible = false;
 
-        //För över värderna till Patient objektet (klassen)
+
+        //Samla ihop alla värden och för över alla värden i ett objekt/klass som representera Produkten.
         var product = new Product
         {
             Name = name,
@@ -87,7 +89,7 @@ class Program
 
         WriteLine("");
         WriteLine("");
-        WriteLine("Är detta korrekt? (J)a (N)ej");
+        Write("Är detta korrekt? (J)a (N)ej");
 
         var keyPressed = ReadKey(); //hämtar in knapptryck
 
@@ -99,7 +101,9 @@ class Program
 
                 SaveProduct(product); // Spara produkten
 
-                WriteLine("Produkten sparad");
+                WriteLine("Produkt sparad");
+
+                Thread.Sleep(2000);
 
                 break;
 
@@ -113,14 +117,17 @@ class Program
 
         }
 
-        Thread.Sleep(2000);
     }
 
     private static void SearchProduct()
     {
+        CursorVisible = true;
+
         Write("SKU: ");
 
         string sku = ReadLine();
+
+        CursorVisible = false;
 
         Clear();
 
@@ -133,11 +140,11 @@ class Program
             WriteLine($"Namn: {product.Name}");
             WriteLine($"Sku: {product.Sku}");
             WriteLine($"Beskrivning: {product.Description}");
-            WriteLine($"Bild: {product.Image}");
+            WriteLine($"Bild (URL): {product.Image}");
             WriteLine($"Pris: {product.Price}");
             WriteLine("");
             WriteLine("");
-            WriteLine("(R)adera");
+            WriteLine("(R)adera" + "  " + "(U)ppdatera");
 
             while (true)
             {
@@ -155,6 +162,12 @@ class Program
                     case ConsoleKey.Escape: //case för knapptryck Escape
 
                         return;
+
+                    case ConsoleKey.U: //case för knapptryck U
+
+                        UpdateProduct(product);
+
+                        return;
                 }
             }
         }
@@ -167,32 +180,91 @@ class Program
 
     }
 
-    private static Product? FindProduct(string sku) //returnera produkt eller null
+    private static void UpdateProduct(Product product)
+    {
+        Clear();
+
+        using var context = new ApplicationContext();//vårt context
+
+        context.Product.Attach(product);//attacha product till contexten com parameter - attach-läge innan vi ändrar den 
+                                        //Samlar in och uppdatera nuvarande product - fattar att den ska ändras
+                                        //Hämtar in nya värden ifrån användaren
+        CursorVisible = true;
+        Write("Namn: ");//läser in alla värden på  nytt
+
+        product.Name = ReadLine();
+
+        WriteLine($"Sku: {product.Sku}");
+
+        Write("Beskrivning: ");
+
+        product.Description = ReadLine();
+
+        Write("Bild(URL): ");
+
+        product.Image = ReadLine();
+
+        Write("Pris: ");
+
+        product.Price = ReadLine();
+
+        CursorVisible = false;
+
+        WriteLine("");
+        WriteLine("");
+        Write("Är detta korrekt? (J)a (N)ej");
+
+        var keyPressed = ReadKey(); //hämtar in knapptryck
+
+        switch (keyPressed.Key)
+        {
+            case ConsoleKey.J: //case för menyval1
+
+                Clear();
+
+                context.SaveChanges(); // Spara ändringarna och genererar en uppdate som skickas till databashanteraren,
+                //då DbContext ser att vi har förändrat modellen och därför krävs det en 
+                //uppdatering av motsvarande data i databasen
+
+                WriteLine("Produkt sparad");
+
+                Thread.Sleep(2000);
+
+                return;
+
+            case ConsoleKey.N: //case för menyval1
+
+                Clear();
+
+                UpdateProduct(product);
+
+                return;
+        }
+
+    }
+
+    private static Product? FindProduct(string sku) // den här metoden returna två olika värden antingen movie eller null
     {
 
         using var context = new ApplicationContext();//vårt context
 
+        // Resultatet av detta uttryck är att den första produkten i databastabellen som matchar sku
+        // kommer att lagras i variabeln produkt. Om ingen matchning hittas kommer produkt att vara null.
         var product = context
        .Product
        .FirstOrDefault(x => x.Sku == sku);
 
         return product;
 
-        //return context.Product.FirstOrDefault(x => x.Sku == sku);
-
     }
 
     private static void SaveProduct(Product product)
     {
-        using var context = new ApplicationContext();//vårt context
-        //2 Kommandon
+        using var context = new ApplicationContext();//vårt context-klass
 
-        // Här lägger vi till studerande till DbContext - den är nu medveten om
-        // detta objektet men har ännu inte sparat den till databasen.
+        // Lägger vi till produkt till DbContext Product
         context.Product.Add(product);
-
-
-        // Här triggas anrop till databasen för att lagra studerande.
+        // Sparas sedan till databasen 
         context.SaveChanges();
     }
 
