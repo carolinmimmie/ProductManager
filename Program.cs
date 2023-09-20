@@ -194,7 +194,15 @@ class Program
 
         product.Name = ReadLine();
 
-        WriteLine($"Sku: {product.Sku}");
+        WriteLine($"Sku: {product.Sku}");//Visa värdet för egenskapen sku i produkt
+
+        // Låt användaren trycka Enter innan du går vidare till Description
+        while (true)//Detta är en oändlig while-loop som körs tills användaren trycker på Enter
+        {
+            var keyPressedEnterAfterSku = ReadKey(true);
+            if (keyPressedEnterAfterSku.Key == ConsoleKey.Enter)
+                break;
+        }
 
         Write("Beskrivning: ");
 
@@ -323,7 +331,7 @@ class Program
                     WriteLine("(R)adera" + "  " + "(U)ppdatera");
 
                     break;
-                    
+
             }
 
             switch (keyPressedConfirmDeleteProduct.Key)
