@@ -17,11 +17,11 @@ class Program
             WriteLine("2. Sök produkt");
             WriteLine("3. Avsluta");
 
-            var keyPressed = ReadKey(true); //Läser in knapptryck
+            var keyPressedMenuChoice = ReadKey(true); //Läser in knapptryck
 
             Clear(); // Rensa skärmen efter vi gjort ett val
 
-            switch (keyPressed.Key)
+            switch (keyPressedMenuChoice.Key)
             {
                 case ConsoleKey.D1: //case för menyval1
                 case ConsoleKey.NumPad1:
@@ -76,7 +76,6 @@ class Program
 
         CursorVisible = false;
 
-
         //Samla ihop alla värden och för över alla värden i ett objekt/klass som representera Produkten.
         var product = new Product
         {
@@ -91,30 +90,32 @@ class Program
         WriteLine("");
         Write("Är detta korrekt? (J)a (N)ej");
 
-        var keyPressed = ReadKey(); //hämtar in knapptryck
-
-        switch (keyPressed.Key)
+        while (true)
         {
-            case ConsoleKey.J: //case för menyval1
+            var keyPressedConfirmRegisterProduct = ReadKey(true); //hämtar in knapptryck
 
-                Clear();
+            switch (keyPressedConfirmRegisterProduct.Key)
+            {
+                case ConsoleKey.J: //case för menyval1
 
-                SaveProduct(product); // Spara produkten
+                    Clear();
 
-                WriteLine("Produkt sparad");
+                    SaveProduct(product); // Spara produkten
 
-                Thread.Sleep(2000);
+                    WriteLine("Produkt sparad");
 
-                break;
+                    Thread.Sleep(2000);
 
-            case ConsoleKey.N: //case för menyval1
+                    return;
 
-                Clear();
+                case ConsoleKey.N: //case för menyval1
 
-                RegisterProduct();
+                    Clear();
 
-                break;
+                    RegisterProduct();
 
+                    return;
+            }
         }
 
     }
@@ -148,10 +149,9 @@ class Program
 
             while (true)
             {
+                var keyPressedDeleteOrUpdateProduct = ReadKey(true); //hämtar in knapptryck
 
-                var keyPressed = ReadKey(true); //hämtar in knapptryck
-
-                switch (keyPressed.Key)
+                switch (keyPressedDeleteOrUpdateProduct.Key)
                 {
                     case ConsoleKey.R: //case för knapptryck R
 
@@ -214,33 +214,36 @@ class Program
         WriteLine("");
         Write("Är detta korrekt? (J)a (N)ej");
 
-        var keyPressed = ReadKey(true); //hämtar in knapptryck
-
-        switch (keyPressed.Key)
+        while (true)
         {
-            case ConsoleKey.J: //case för menyval1
+            var keyPressedConfirmUpdateProduct = ReadKey(true); //hämtar in knapptryck
 
-                Clear();
+            switch (keyPressedConfirmUpdateProduct.Key)
+            {
+                case ConsoleKey.J: //case för menyval1
 
-                context.SaveChanges(); // Spara ändringarna och genererar en uppdate som skickas till databashanteraren,
-                //då DbContext ser att vi har förändrat modellen och därför krävs det en 
-                //uppdatering av motsvarande data i databasen
+                    Clear();
 
-                WriteLine("Produkt sparad");
+                    context.SaveChanges(); // Spara ändringarna och genererar en uppdate som skickas till databashanteraren,
+                                           //då DbContext ser att vi har förändrat modellen och därför krävs det en 
+                                           //uppdatering av motsvarande data i databasen
 
-                Thread.Sleep(2000);
+                    WriteLine("Produkt sparad");
 
-                return;
+                    Thread.Sleep(2000);
 
-            case ConsoleKey.N: //case för menyval1
+                    return;
 
-                Clear();
+                case ConsoleKey.N: //case för menyval1
 
-                UpdateProduct(product);
+                    Clear();
 
-                return;
+                    UpdateProduct(product);
+
+                    return;
+            }
+
         }
-
     }
 
     private static Product? FindProduct(string sku) // den här metoden returna två olika värden antingen movie eller null
@@ -283,65 +286,59 @@ class Program
         WriteLine("");
         WriteLine("Radera produkt? (J)a eller (N)ej");
 
-
-        var keyPressed = ReadKey(true); //hämtar in knapptryck
-
-        switch (keyPressed.Key)
+        while (true)
         {
-            case ConsoleKey.J: //case för menyval1
-                Clear();
 
-                // Här lägger vi till studerande till DbContext - den är nu medveten om
-                // detta objektet men har ännu inte sparat den till databasen.
-                context.Product.Remove(product);
+            var keyPressedConfirmDeleteProduct = ReadKey(true); //hämtar in knapptryck
 
-                // Här triggas anrop till databasen för att lagra studerande.
-                context.SaveChanges();
+            switch (keyPressedConfirmDeleteProduct.Key)
+            {
+                case ConsoleKey.J: //case för menyval1
+                    Clear();
 
-                WriteLine("Produkt raderad");
+                    // Här lägger vi till studerande till DbContext - den är nu medveten om
+                    // detta objektet men har ännu inte sparat den till databasen.
+                    context.Product.Remove(product);
 
-                Thread.Sleep(2000);
+                    // Här triggas anrop till databasen för att lagra studerande.
+                    context.SaveChanges();
 
-                return;
+                    WriteLine("Produkt raderad");
 
-            case ConsoleKey.N: //case för menyval1
-                Clear();
+                    Thread.Sleep(2000);
 
-                //skicka in socialSecurityNumber i metoden FindPatient
+                    return;
 
-                //Om produkten hittades
-                // if (product is not null)
-                // {
-                WriteLine($"Namn: {product.Name}");
-                WriteLine($"Sku: {product.Sku}");
-                WriteLine($"Beskrivning: {product.Description}");
-                WriteLine($"Bild: {product.Image}");
-                WriteLine($"Pris: {product.Price}");
-                WriteLine("");
-                WriteLine("");
-                WriteLine("(R)adera" + "  " + "(U)ppdatera");
+                case ConsoleKey.N: //case för menyval1
 
-                while (true)
-                {
-                    var keyPressedTest = ReadKey(true); //hämtar in knapptryck
+                    Clear();
 
-                    switch (keyPressedTest.Key)
-                    {
-                        case ConsoleKey.R: //case för knapptryck R
+                    WriteLine($"Namn: {product.Name}");
+                    WriteLine($"Sku: {product.Sku}");
+                    WriteLine($"Beskrivning: {product.Description}");
+                    WriteLine($"Bild: {product.Image}");
+                    WriteLine($"Pris: {product.Price}");
+                    WriteLine("");
+                    WriteLine("");
+                    WriteLine("(R)adera" + "  " + "(U)ppdatera");
 
-                            DeleteProduct(product);
+                    break;
+                    
+            }
 
-                            return;
+            switch (keyPressedConfirmDeleteProduct.Key)
+            {
+                case ConsoleKey.R: //case för knapptryck R
 
-                        case ConsoleKey.Escape: //case för knapptryck Escape
+                    DeleteProduct(product);
 
-                            return;
-                    }
-                }
+                    return;
+
+                case ConsoleKey.Escape: //case för knapptryck Escape
+
+                    return;
+            }
         }
-
-        // return;
-        // }
     }
-
 }
+
