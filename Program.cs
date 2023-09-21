@@ -8,49 +8,49 @@ class Program
 {
     public static void Main()
     {
-        Title = "Product Manager"; //sätter namnet på tabben
-        CursorVisible = false; //stänger av markör
+        Title = "Product Manager";
+        CursorVisible = false;
 
-        while (true) //Loop som körs tills vi stänger ner den
+        while (true) // Loop som körs tills vi stänger ner applikationen
         {
             WriteLine("1. Ny produkt");
             WriteLine("2. Sök produkt");
             WriteLine("3. Avsluta");
 
-            var keyPressedMenuChoice = ReadKey(true); //Läser in knapptryck
+            var keyPressedMenuChoice = ReadKey(true); // Väntar in knapptryck
 
-            Clear(); // Rensa skärmen efter vi gjort ett val
+            Clear();
 
             switch (keyPressedMenuChoice.Key)
             {
-                case ConsoleKey.D1: //case för menyval1
+                case ConsoleKey.D1: // Case för menyval1
                 case ConsoleKey.NumPad1:
 
                     RegisterProduct();
 
                     break;
 
-                case ConsoleKey.D2: //case för menyval2
+                case ConsoleKey.D2: // Case för menyval2
                 case ConsoleKey.NumPad2:
 
                     SearchProduct();
 
                     break;
 
-                case ConsoleKey.D3: //case för menyval3
+                case ConsoleKey.D3: // Case för menyval3
                 case ConsoleKey.NumPad3:
 
-                    Environment.Exit(0);
+                    Environment.Exit(0); // Metodanrop i C# 
 
                     return;
             }
 
-            Clear(); // Rensa skärmen efter val i meny
+            Clear();
         }
     }
 
     //Metoderna
-    private static void RegisterProduct()
+    private static void RegisterProduct() // Registrera en ny produkt
     {
         CursorVisible = true;
 
@@ -76,8 +76,8 @@ class Program
 
         CursorVisible = false;
 
-        //Samla ihop alla värden och för över alla värden i ett objekt/klass som representera Produkten.
-        var product = new Product
+
+        var product = new Product // Samla ihop alla värden/för över värden i ett objekt/klass som representera Produkten.
         {
             Name = name,
             Sku = sku,
@@ -86,17 +86,17 @@ class Program
             Price = price
         };
 
-        WriteLine("");
-        WriteLine("");
+        WriteLine();
+        WriteLine();
         Write("Är detta korrekt? (J)a (N)ej");
 
         while (true)
         {
-            var keyPressedConfirmRegisterProduct = ReadKey(true); //hämtar in knapptryck
+            var keyPressedConfirmRegisterProduct = ReadKey(true); // Väntar in knapptryck
 
             switch (keyPressedConfirmRegisterProduct.Key)
             {
-                case ConsoleKey.J: //case för menyval1
+                case ConsoleKey.J: // Case för knapptryck J
 
                     Clear();
 
@@ -108,11 +108,11 @@ class Program
 
                     return;
 
-                case ConsoleKey.N: //case för menyval1
+                case ConsoleKey.N: // Case för knapptryck N
 
                     Clear();
 
-                    RegisterProduct();
+                    RegisterProduct(); // Registrera produkten
 
                     return;
             }
@@ -120,7 +120,7 @@ class Program
 
     }
 
-    private static void SearchProduct()
+    private static void SearchProduct() // Sök efter produkt
     {
         CursorVisible = true;
 
@@ -132,11 +132,10 @@ class Program
 
         Clear();
 
-        //skicka in socialSecurityNumber i metoden FindPatient
-        var product = FindProduct(sku);
 
-        //Om produkten hittades
-        if (product is not null)
+        var product = FindProduct(sku); // Skicka in sku i metoden FindProduct
+
+        if (product is not null) // Om produkten hittades
         {
             WriteLine($"Namn: {product.Name}");
             WriteLine($"Sku: {product.Sku}");
@@ -149,21 +148,21 @@ class Program
 
             while (true)
             {
-                var keyPressedDeleteOrUpdateProduct = ReadKey(true); //hämtar in knapptryck
+                var keyPressedDeleteOrUpdateProduct = ReadKey(true); // Väntar in knapptryck
 
-                switch (keyPressedDeleteOrUpdateProduct.Key)
+                switch (keyPressedDeleteOrUpdateProduct.Key) // Hantera knapptryck
                 {
-                    case ConsoleKey.R: //case för knapptryck R
+                    case ConsoleKey.R: // Case för knapptryck R
 
                         DeleteProduct(product);
 
                         return;
 
-                    case ConsoleKey.Escape: //case för knapptryck Escape
+                    case ConsoleKey.Escape: // Case för knapptryck Escape
 
                         return;
 
-                    case ConsoleKey.U: //case för knapptryck U
+                    case ConsoleKey.U: // Case för knapptryck U
 
                         UpdateProduct(product);
 
@@ -180,24 +179,23 @@ class Program
 
     }
 
-    private static void UpdateProduct(Product product)
+    private static void UpdateProduct(Product product) // Updatera produkt
     {
         Clear();
 
-        using var context = new ApplicationContext();//vårt context
+        using var context = new ApplicationContext(); // Vårt context
 
-        context.Product.Attach(product);//attacha product till contexten com parameter - attach-läge innan vi ändrar den 
-                                        //Samlar in och uppdatera nuvarande product - fattar att den ska ändras
-                                        //Hämtar in nya värden ifrån användaren
+        context.Product.Attach(product); // Fäster product till contexten - fattar att den ska ändras
+
         CursorVisible = true;
-        Write("Namn: ");//läser in alla värden på  nytt
+
+        Write("Namn: ");
 
         product.Name = ReadLine();
 
-        WriteLine($"Sku: {product.Sku}");//Visa värdet för egenskapen sku i produkt
+        WriteLine($"Sku: {product.Sku}"); // Visa värdet för egenskapen sku i produkt
 
-        // Låt användaren trycka Enter innan du går vidare till Description
-        while (true)//Detta är en oändlig while-loop som körs tills användaren trycker på Enter
+        while (true) // While-loop som körs tills användaren trycker på Enter innan description visas
         {
             var keyPressedEnterAfterSku = ReadKey(true);
             if (keyPressedEnterAfterSku.Key == ConsoleKey.Enter)
@@ -218,23 +216,21 @@ class Program
 
         CursorVisible = false;
 
-        WriteLine("");
-        WriteLine("");
+        WriteLine();
+        WriteLine();
         Write("Är detta korrekt? (J)a (N)ej");
 
         while (true)
         {
-            var keyPressedConfirmUpdateProduct = ReadKey(true); //hämtar in knapptryck
+            var keyPressedConfirmUpdateProduct = ReadKey(true);
 
             switch (keyPressedConfirmUpdateProduct.Key)
             {
-                case ConsoleKey.J: //case för menyval1
+                case ConsoleKey.J:
 
                     Clear();
 
-                    context.SaveChanges(); // Spara ändringarna och genererar en uppdate som skickas till databashanteraren,
-                                           //då DbContext ser att vi har förändrat modellen och därför krävs det en 
-                                           //uppdatering av motsvarande data i databasen
+                    context.SaveChanges(); // Spara ändringarna i databasen 
 
                     WriteLine("Produkt sparad");
 
@@ -242,46 +238,44 @@ class Program
 
                     return;
 
-                case ConsoleKey.N: //case för menyval1
-
+                case ConsoleKey.N:
                     Clear();
 
                     UpdateProduct(product);
 
                     return;
             }
-
         }
     }
 
-    private static Product? FindProduct(string sku) // den här metoden returna två olika värden antingen movie eller null
+    private static Product? FindProduct(string sku) // Hitta produkt - den här metoden returna två olika värden antingen produkten eller null
     {
 
-        using var context = new ApplicationContext();//vårt context
+        using var context = new ApplicationContext(); // Vårt context
 
-        // Resultatet av detta uttryck är att den första produkten i databastabellen som matchar sku
+        // Söker efterförsta produkten i produkttabellen som matchar sku
         // kommer att lagras i variabeln produkt. Om ingen matchning hittas kommer produkt att vara null.
         var product = context
        .Product
        .FirstOrDefault(x => x.Sku == sku);
 
         return product;
-
     }
+
 
     private static void SaveProduct(Product product)
     {
-        using var context = new ApplicationContext();//vårt context-klass
+        using var context = new ApplicationContext(); // Vårt context-klass
 
-        // Lägger vi till produkt till DbContext Product
-        context.Product.Add(product);
-        // Sparas sedan till databasen 
-        context.SaveChanges();
+
+        context.Product.Add(product); // Lägger vi till produkt till DbContext Product
+
+        context.SaveChanges(); // Sparas sedan till databasen 
     }
 
-    private static void DeleteProduct(Product product)
+    private static void DeleteProduct(Product product) // Radera produkt
     {
-        using var context = new ApplicationContext();//vårt context
+        using var context = new ApplicationContext();
 
         Clear();
 
@@ -297,19 +291,16 @@ class Program
         while (true)
         {
 
-            var keyPressedConfirmDeleteProduct = ReadKey(true); //hämtar in knapptryck
+            var keyPressedConfirmDeleteProduct = ReadKey(true); // Väntar in knapptryck
 
             switch (keyPressedConfirmDeleteProduct.Key)
             {
-                case ConsoleKey.J: //case för menyval1
+                case ConsoleKey.J:
                     Clear();
 
-                    // Här lägger vi till studerande till DbContext - den är nu medveten om
-                    // detta objektet men har ännu inte sparat den till databasen.
-                    context.Product.Remove(product);
+                    context.Product.Remove(product); // Ta bort produkt
 
-                    // Här triggas anrop till databasen för att lagra studerande.
-                    context.SaveChanges();
+                    context.SaveChanges(); // Spara i databasen
 
                     WriteLine("Produkt raderad");
 
@@ -317,7 +308,7 @@ class Program
 
                     return;
 
-                case ConsoleKey.N: //case för menyval1
+                case ConsoleKey.N:
 
                     Clear();
 
@@ -336,13 +327,13 @@ class Program
 
             switch (keyPressedConfirmDeleteProduct.Key)
             {
-                case ConsoleKey.R: //case för knapptryck R
+                case ConsoleKey.R: // Case för knapptryck R
 
                     DeleteProduct(product);
 
                     return;
 
-                case ConsoleKey.Escape: //case för knapptryck Escape
+                case ConsoleKey.Escape: // Case för knapptryck Escape
 
                     return;
             }

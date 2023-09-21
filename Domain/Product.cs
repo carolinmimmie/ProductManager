@@ -4,10 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ProductManager.Domain;
 
-//Skapat en klasss som representerar strukturen för patient 
-
 //required eller konstruktor gör det obligatoriskt att alla fält måste fyllas i 
-[Index(nameof(Sku), IsUnique = true)]//unik
+[Index(nameof(Sku), IsUnique = true)]//Sku-värden är unika i din databas.
 public class Product
 {
     public int Id { get; set; }

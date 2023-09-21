@@ -3,7 +3,7 @@ using ProductManager.Domain;
 
 namespace ProductManager.Data;
 
-public class ApplicationContext : DbContext
+public class ApplicationContext : DbContext//Möjligör kommikationen med modellen och databasen
 {
 
   private string connectionString = "Server=.;Database=ProductManager;Integrated Security=false;Encrypt=False;User ID=SA;Password=Dinoaugust123456!;";
@@ -12,6 +12,6 @@ public class ApplicationContext : DbContext
   {
     optionsBuilder.UseSqlServer(connectionString);
   }
-  //Kunna prata med tabellen som skapades
+  //Kommunicera med  Modellen Product 
   public DbSet<Product> Product { get; set; }
 }
